@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.zinin.myexpenses.component.TokenHolder;
 import ru.zinin.myexpenses.dto.RequestLogin;
+import ru.zinin.myexpenses.dto.RequestRegister;
 import ru.zinin.myexpenses.dto.RespondToken;
+import ru.zinin.myexpenses.exception.EmailAlreadyExist;
 import ru.zinin.myexpenses.exception.PasswordWrong;
 import ru.zinin.myexpenses.exception.UserNotFound;
 import ru.zinin.myexpenses.model.User;
@@ -35,6 +37,24 @@ public class UserService {
         }
 
         RespondToken respondToken = tokenHolder.setToken(user);
+
+        return ResponseEntity.ok(respondToken);
+    }
+
+    public ResponseEntity<RespondToken> register(RequestRegister requestRegister) throws EmailAlreadyExist {
+        User userExist = userRepo.getUserByEmail(requestRegister.getEmail());
+        if (userExist != null) {
+            throw new EmailAlreadyExist(requestRegister.getEmail());
+        }
+
+        User newUser = new User();
+        newUser.setEmail(requestRegister.getEmail());
+        newUser.setPassword(requestRegister.getPassword());
+        newUser.setFirstName(requestRegister.getName());
+
+        User userFromDb = userRepo.save(newUser);
+
+        RespondToken respondToken = tokenHolder.setToken(userFromDb);
 
         return ResponseEntity.ok(respondToken);
     }

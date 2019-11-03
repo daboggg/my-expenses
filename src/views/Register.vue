@@ -90,6 +90,7 @@
 </template>
 
 <script>
+import { SHA256 } from '../utils/sha256'
 export default {
   name: 'Register',
   data: () => ({
@@ -113,13 +114,13 @@ export default {
   methods: {
     async validate () {
       if (this.$refs.form.validate()) {
+        const tmpPassword = SHA256(this.password)
         const register = {
           email: this.email,
-          password: this.password,
+          password: tmpPassword,
           name: this.name
         }
         try {
-          console.log(register)
           await this.$store.dispatch('register', register)
           this.$router.push('/')
         } catch (e) {

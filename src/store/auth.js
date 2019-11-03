@@ -12,7 +12,7 @@ export default {
     }
   },
   actions: {
-    async login ({ dispatch, commit }, { email, password }) {
+    async login ({ commit }, { email, password }) {
       try {
         const res = await Vue.http.post(`http://localhost:${port}/api/login`,
           JSON.stringify({ email: email, password: password }),
@@ -23,6 +23,20 @@ export default {
       } catch (e) {
         commit('setError', e.body.message)
         console.log(e.body.message)
+        throw e
+      }
+    },
+    async register ({ commit }, { email, password, name }) {
+      try {
+        const res = await Vue.http.put(`http://localhost:${port}/api/register`,
+          JSON.stringify({ email: email, password: password, name: name }),
+          { 'Content-Type': 'application/json' })
+        const login = await res.json()
+        commit('login', { name: login.firstName, token: login.token })
+        console.log(res)
+      } catch (e) {
+        console.log(e)
+        commit('setError', e.body.message)
         throw e
       }
     }

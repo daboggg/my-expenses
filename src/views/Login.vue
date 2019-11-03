@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import { SHA256 } from '../utils/sha256'
 export default {
   name: 'Login',
   data: () => ({
@@ -96,9 +97,10 @@ export default {
   methods: {
     async validate () {
       if (this.$refs.form.validate()) {
+        const tmpPassword = SHA256(this.password)
         const login = {
           email: this.email,
-          password: this.password
+          password: tmpPassword
         }
         try {
           await this.$store.dispatch('login', login)
