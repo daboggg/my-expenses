@@ -19,7 +19,7 @@
               dark
               flat
             >
-              <v-toolbar-title>Login</v-toolbar-title>
+              <v-toolbar-title>Регистрация</v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
             <v-card-text>
@@ -41,7 +41,7 @@
 
                 <v-text-field
                   id="password"
-                  label="Password"
+                  label="пароль"
                   name="password"
                   prepend-icon="lock"
                   type="password"
@@ -49,14 +49,26 @@
                   :rules="passwordRules"
                   required
                 ></v-text-field>
+
+                <v-text-field
+                  id="name"
+                  label="имя"
+                  name="name"
+                  prepend-icon="person"
+                  type="text"
+                  v-model="name"
+                  :rules="nameRules"
+                  required
+                ></v-text-field>
+
                 <v-card-actions>
-                  <p class="mt-4">Нет аккаунта?</p>
+                  <p class="mt-4">Уже есть аккаунт?</p>
                   <v-btn
                     color="deep-orange"
                     text
-                    to="/register"
+                    to="/login"
                   >
-                    Регистрация
+                    Войти
                   </v-btn>
                   <v-spacer></v-spacer>
                   <v-btn
@@ -65,7 +77,7 @@
                     color="teal darken-1"
                     @click="validate"
                   >
-                    Login
+                    Регистрация
                   </v-btn>
                 </v-card-actions>
               </v-form>
@@ -79,7 +91,7 @@
 
 <script>
 export default {
-  name: 'Login',
+  name: 'Register',
   data: () => ({
     valid: true,
     email: '',
@@ -91,17 +103,24 @@ export default {
     passwordRules: [
       v => !!v || 'Password is required',
       v => (v && v.length > 5) || 'the password must be at least 6 characters'
+    ],
+    name: '',
+    nameRules: [
+      v => !!v || 'Name is required',
+      v => (v && v.length > 5) || 'name must be at least 6 characters'
     ]
   }),
   methods: {
     async validate () {
       if (this.$refs.form.validate()) {
-        const login = {
+        const register = {
           email: this.email,
-          password: this.password
+          password: this.password,
+          name: this.name
         }
         try {
-          await this.$store.dispatch('login', login)
+          console.log(register)
+          await this.$store.dispatch('register', register)
           this.$router.push('/')
         } catch (e) {
         }

@@ -1,0 +1,25 @@
+package ru.zinin.myexpenses.dto;
+
+import lombok.Data;
+import ru.zinin.myexpenses.model.Category;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Data
+public class CategoryDto {
+
+    public static CategoryDto getCategoryDto(Category category) {
+        CategoryDto dto = new CategoryDto();
+        dto.name = category.getName();
+        return dto;
+    }
+
+    public static List<CategoryDto> getListCategoryDto(List<Category> categories) {
+        return  categories.stream()
+                .map(cat -> CategoryDto.getCategoryDto(cat))
+                .collect(Collectors.toList());
+    }
+
+    private String name;
+}

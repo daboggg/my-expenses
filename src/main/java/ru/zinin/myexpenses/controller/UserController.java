@@ -9,10 +9,15 @@ import ru.zinin.myexpenses.dto.RequestLogin;
 import ru.zinin.myexpenses.dto.RespondToken;
 import ru.zinin.myexpenses.exception.PasswordWrong;
 import ru.zinin.myexpenses.exception.UserNotFound;
+import ru.zinin.myexpenses.model.Category;
 import ru.zinin.myexpenses.model.User;
 import ru.zinin.myexpenses.repo.UserRepo;
 import ru.zinin.myexpenses.service.UserService;
 
+import java.util.Arrays;
+import java.util.List;
+
+@CrossOrigin(maxAge = 3600)
 @RestController
 public class UserController {
 
@@ -37,6 +42,7 @@ public class UserController {
         return new ResponseEntity<>(asd, HttpStatus.OK);
     }
 
+    @CrossOrigin(methods = RequestMethod.POST)
     @PostMapping("/api/login")
     public ResponseEntity<RespondToken> login(@RequestBody RequestLogin requestLogin) throws UserNotFound, PasswordWrong {
 
@@ -44,18 +50,31 @@ public class UserController {
     }
 
     @PutMapping("/register")
-    public ResponseEntity<?> register() {
+    public User register() {
         User user = new User();
-        user.setEmail("vzinin@list.ru");
-        user.setFirstName("vovan");
         user.setPassword("123456");
-        User userDb = userRepo.save(user);
-        return ResponseEntity.ok(userDb);
+        user.setFirstName("VOVAN");
+        user.setEmail("aa@aa.aa");
+        User save = userRepo.save(user);
+        return save;
     }
 
     @PostMapping("/api/test")
-    public ResponseEntity<?> test() {
+    public void test() {
 //        tokenHolder.test();
-        return ResponseEntity.ok("OK");
+        User user = new User();
+        user.setPassword("123456");
+        user.setFirstName("VOVAN");
+        user.setEmail("KJKJKJ");
+
+
+        Category category = new Category();
+        category.setName("xxx");
+        Category category1 = new Category();
+        category1.setName("yyy");
+
+        user.addCategory(category);
+        user.addCategory(category1);
+        userRepo.save(user);
     }
 }

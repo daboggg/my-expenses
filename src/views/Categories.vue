@@ -14,6 +14,11 @@ export default {
     console.log(SHA256('asasas'))
     console.log(SHA256('sasas'))
     console.log(SHA256('vzinin@list.ru'))
+    this.$toast('AAAAAAAAAAAdddddddddddd', {
+      x: 'right',
+      y: 'top',
+      timeout: 10000
+    })
   }
 }
 </script>

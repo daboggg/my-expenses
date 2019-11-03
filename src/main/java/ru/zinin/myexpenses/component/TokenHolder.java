@@ -10,6 +10,7 @@ import ru.zinin.myexpenses.model.User;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 @Component
@@ -63,5 +64,19 @@ public class TokenHolder {
                 System.out.println("After: "+token.getCreationTimeToken());
             }
         }
+    }
+
+    public Long getIdUser() {
+        String tokenFromHeader = request.getHeader("Token");
+        Long id = null;
+        Token tmp = null;
+        for (Token token : tokenMap.keySet()) {
+            if (Objects.equals(token.getToken(),tokenFromHeader)) {
+                tmp = token;
+            }
+        }
+        id = tokenMap.get(tmp);
+
+        return tokenMap.get(tmp);
     }
 }
