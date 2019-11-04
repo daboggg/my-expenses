@@ -109,6 +109,17 @@ export default {
         }
       }
     }
+  },
+  mounted () {
+    if (this.$route.query.message) {
+      this.$toast(this.$route.query.message, {
+        'x': 'right',
+        'y': 'top',
+        'timeout': 4000,
+        icon: 'mdi-flash',
+        'color': 'error'
+      })
+    }
   }
 }
 </script>

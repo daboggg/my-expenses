@@ -1,23 +1,15 @@
 package ru.zinin.myexpenses.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.zinin.myexpenses.component.TokenHolder;
 import ru.zinin.myexpenses.dto.RequestLogin;
 import ru.zinin.myexpenses.dto.RequestRegister;
 import ru.zinin.myexpenses.dto.RespondToken;
 import ru.zinin.myexpenses.exception.EmailAlreadyExist;
 import ru.zinin.myexpenses.exception.PasswordWrong;
 import ru.zinin.myexpenses.exception.UserNotFound;
-import ru.zinin.myexpenses.model.Category;
-import ru.zinin.myexpenses.model.User;
-import ru.zinin.myexpenses.repo.UserRepo;
 import ru.zinin.myexpenses.service.UserService;
-
-import java.util.Arrays;
-import java.util.List;
 
 //@CrossOrigin(methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE})
 @RestController

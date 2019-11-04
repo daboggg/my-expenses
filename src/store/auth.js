@@ -2,13 +2,21 @@ import Vue from 'vue'
 const port = process.env.VUE_APP_SERVERPORT
 export default {
   state: {
-    name: '',
-    token: ''
+    name: null,
+    token: null
   },
   mutations: {
     login (state, login) {
       state.name = login.name
       state.token = login.token
+      sessionStorage.setItem('name', login.name)
+      sessionStorage.setItem('token', login.token)
+    },
+    logout (state) {
+      state.name = null
+      state.token = null
+      sessionStorage.removeItem('name')
+      sessionStorage.removeItem('token')
     }
   },
   actions: {

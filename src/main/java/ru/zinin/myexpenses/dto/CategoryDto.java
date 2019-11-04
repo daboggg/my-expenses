@@ -11,6 +11,7 @@ public class CategoryDto {
 
     public static CategoryDto getCategoryDto(Category category) {
         CategoryDto dto = new CategoryDto();
+        dto.id = category.getId();
         dto.name = category.getName();
         return dto;
     }
@@ -21,5 +22,6 @@ public class CategoryDto {
                 .collect(Collectors.toList());
     }
 
+    private Long id;
     private String name;
 }
