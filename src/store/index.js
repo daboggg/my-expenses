@@ -7,7 +7,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    error: null
+    error: null,
+    message: null
   },
   mutations: {
     setError (state, error) {
@@ -15,12 +16,19 @@ export default new Vuex.Store({
     },
     clearError (state) {
       state.error = null
+    },
+    setMessage (state, message) {
+      state.message = message
+    },
+    clearMessage (state) {
+      state.message = null
     }
   },
   actions: {
   },
   getters: {
-    error: state => state.error
+    error: state => state.error,
+    message: state => state.message
   },
   modules: {
     auth, category

@@ -112,12 +112,15 @@ export default {
   },
   mounted () {
     if (this.$route.query.message) {
+      if (this.$route.query.message === 'you are out') {
+        this.$store.commit('logout')
+      }
       this.$toast(this.$route.query.message, {
         'x': 'right',
         'y': 'top',
         'timeout': 4000,
         icon: 'mdi-flash',
-        'color': 'error'
+        'color': this.$route.query.message === 'you are out' ? 'info' : 'error'
       })
     }
   }

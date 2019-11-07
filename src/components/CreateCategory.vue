@@ -29,12 +29,14 @@ export default {
   }),
   methods: {
     async submit () {
-      if (this.$refs.form.validate) {
+      if (this.$refs.form.validate()) {
         try {
-          // eslint-disable-next-line no-unused-vars
           const category = await this.$store.dispatch('createCategory', {
             name: this.name
           })
+          this.$refs.form.reset()
+          this.name = ''
+          this.$emit('addCategory', category)
         } catch (e) {
           if (e.body.message === 'invalid token') {
             this.$router.push('/login?message=sign in again')

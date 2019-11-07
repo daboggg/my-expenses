@@ -31,6 +31,9 @@ export default {
   computed: {
     error () {
       return this.$store.getters.error
+    },
+    message () {
+      return this.$store.getters.message
     }
   },
   watch: {
@@ -45,6 +48,18 @@ export default {
         })
       }
       this.$store.commit('clearError')
+    },
+    message (message) {
+      if (message) {
+        this.$toast(message, {
+          'x': 'right',
+          'y': 'top',
+          'timeout': 4000,
+          icon: 'mdi-flash',
+          'color': 'info'
+        })
+      }
+      this.$store.commit('clearMessage')
     }
   }
 }

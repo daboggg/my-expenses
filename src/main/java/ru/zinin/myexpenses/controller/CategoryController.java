@@ -17,14 +17,21 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
+    @CrossOrigin(methods = RequestMethod.GET)
     @GetMapping("/api/category")
     public ResponseEntity<List<CategoryDto>> getCategory() throws InvalidToken {
         return categoryService.getCategory();
     }
 
-    @CrossOrigin(methods = RequestMethod.PUT)
-    @PutMapping("/api/category")
+    @CrossOrigin(methods = RequestMethod.POST)
+    @PostMapping("/api/category")
     public ResponseEntity<CategoryDto> createCategory(@RequestBody Category category) throws InvalidToken, CategoryAlreadyExist {
         return categoryService.createCategory(category);
+    }
+
+    @CrossOrigin(methods = RequestMethod.PUT)
+    @PutMapping("/api/category")
+    public ResponseEntity<CategoryDto> updateCategory(@RequestBody Category category) throws InvalidToken {
+        return categoryService.updateCategory(category);
     }
 }

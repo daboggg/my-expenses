@@ -50,8 +50,19 @@ public class CategoryService {
 
         category.setUsr(user);
         user.getCategories().add(category);
-        userRepo.save(user);
-        Category byName = categoryRepo.getByName(category.getName());
+        User saveUser = userRepo.save(user);
+        Category byName = categoryRepo.getByNameAndUsr(category.getName(), saveUser);
         return ResponseEntity.ok(CategoryDto.getCategoryDto(byName));
+    }
+
+    public ResponseEntity<CategoryDto> updateCategory(Category category) throws InvalidToken {
+        if (!tokenHolder.isValidToken()) {
+            throw new InvalidToken();
+        }
+        tokenHolder.updateTimeValidityToken();
+        Category categoryFromDb = categoryRepo.getById(category.getId());
+        categoryFromDb.setName(category.getName());
+        Category savedCategory = categoryRepo.save(categoryFromDb);
+        return ResponseEntity.ok(CategoryDto.getCategoryDto(savedCategory));
     }
 }

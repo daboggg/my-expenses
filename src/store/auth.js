@@ -41,6 +41,7 @@ export default {
           { 'Content-Type': 'application/json' })
         const login = await res.json()
         commit('login', { name: login.firstName, token: login.token })
+        commit('setMessage', 'registration successful')
         console.log(res)
       } catch (e) {
         console.log(e)
