@@ -27,7 +27,7 @@ export default {
           { 'Content-Type': 'application/json' })
 
         const login = await res.json()
-        commit('login', { name: login.firstName, token: login.token })
+        commit('login', { name: login.name, token: login.token })
       } catch (e) {
         commit('setError', e.body.message)
         console.log(e.body.message)
@@ -40,7 +40,7 @@ export default {
           JSON.stringify({ email: email, password: password, name: name }),
           { 'Content-Type': 'application/json' })
         const login = await res.json()
-        commit('login', { name: login.firstName, token: login.token })
+        commit('login', { name: login.name, token: login.token })
         commit('setMessage', 'registration successful')
         console.log(res)
       } catch (e) {

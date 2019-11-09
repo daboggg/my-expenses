@@ -10,18 +10,24 @@ import java.util.stream.Collectors;
 public class CategoryDto {
 
     public static CategoryDto getCategoryDto(Category category) {
-        CategoryDto dto = new CategoryDto();
-        dto.id = category.getId();
-        dto.name = category.getName();
+        CategoryDto dto = new CategoryDto(category.getId(), category.getName());
         return dto;
     }
 
     public static List<CategoryDto> getListCategoryDto(List<Category> categories) {
-        return  categories.stream()
+        return categories.stream()
                 .map(cat -> CategoryDto.getCategoryDto(cat))
                 .collect(Collectors.toList());
     }
 
     private Long id;
     private String name;
+
+    public CategoryDto() {
+    }
+
+    public CategoryDto(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

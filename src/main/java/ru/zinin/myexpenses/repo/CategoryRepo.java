@@ -9,7 +9,7 @@ import java.util.List;
 public interface CategoryRepo extends JpaRepository<Category, Long> {
     List<Category> getAllByUsr(User user);
 
-    Category getByNameAndUsr(String name, User usr);
+    List<Category> getByName(String name);
 
     Category getById(Long id);
 }

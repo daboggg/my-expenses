@@ -34,6 +34,12 @@ const router = new VueRouter({
       name: 'home',
       meta: { layout: 'main', auth: true },
       component: () => import('../views/Home.vue')
+    },
+    {
+      path: '/record',
+      name: 'record',
+      meta: { layout: 'main', auth: true },
+      component: () => import('../views/NewRecord.vue')
     }
   ]
 })

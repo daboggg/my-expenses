@@ -1,7 +1,6 @@
 package ru.zinin.myexpenses.dto;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Objects;
 

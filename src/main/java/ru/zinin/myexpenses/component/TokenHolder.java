@@ -3,15 +3,14 @@ package ru.zinin.myexpenses.component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.zinin.myexpenses.dto.RespondToken;
 import ru.zinin.myexpenses.dto.Token;
+import ru.zinin.myexpenses.dto.TokenDto;
 import ru.zinin.myexpenses.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 @Component
 public class TokenHolder {
@@ -29,10 +28,10 @@ public class TokenHolder {
 
     private static Map<Token, Long> tokenMap = new HashMap<>();
 
-    public RespondToken setToken(User user) {
+    public TokenDto setToken(User user) {
         Token token = tokenGenerator.getToken();
         tokenMap.put(token, user.getId());
-        return new RespondToken(user.getFirstName(), token.getToken());
+        return new TokenDto(user.getName(), token.getToken());
     }
 
     public boolean isValidToken() {

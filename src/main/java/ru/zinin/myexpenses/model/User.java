@@ -15,46 +15,20 @@ public class User {
 
     private String email;
     private String password;
-    private String firstName;
+    private String name;
 
     @OneToMany(mappedBy = "usr",
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private Set<Category> categories = new HashSet<>();
+            fetch = FetchType.EAGER)
+    private List<Category> categories;
 
-    public void addCategory(Category category) {
-        categories.add(category);
-        category.setUsr(this);
+    public User() {
     }
 
-    public void removeCategory(Category category) {
-        categories.remove(category);
-        category.setUsr(null);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id.equals(user.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    public void setCategories(Set<Category> categories) {
+    public User(String email, String password, String name, List<Category> categories) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
         this.categories = categories;
-        categories.forEach(cat-> cat.setUsr(this));
     }
 }

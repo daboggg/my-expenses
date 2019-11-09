@@ -13,6 +13,7 @@ import ru.zinin.myexpenses.repo.CategoryRepo;
 import ru.zinin.myexpenses.repo.UserRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -21,38 +22,41 @@ public class CategoryService {
     TokenHolder tokenHolder;
 
     @Autowired
-    UserRepo userRepo;
-
-    @Autowired
     CategoryRepo categoryRepo;
 
-    public ResponseEntity<List<CategoryDto>> getCategory() throws InvalidToken {
-        if (!tokenHolder.isValidToken()) {
-            throw new InvalidToken();
-        }
-        tokenHolder.updateTimeValidityToken();
-        User user = userRepo.getUserById(tokenHolder.getIdUser());
-        return ResponseEntity.ok(CategoryDto.getListCategoryDto(categoryRepo.getAllByUsr(user)));
-    }
+    @Autowired
+    UserRepo userRepo;
 
     public ResponseEntity<CategoryDto> createCategory(Category category) throws InvalidToken, CategoryAlreadyExist {
         if (!tokenHolder.isValidToken()) {
             throw new InvalidToken();
         }
         tokenHolder.updateTimeValidityToken();
-        User user = userRepo.getUserById(tokenHolder.getIdUser());
 
-        for (Category userCategory : user.getCategories()) {
-            if (userCategory.getName().equals(category.getName())) {
+        User userById = userRepo.getUserById(tokenHolder.getIdUser());
+
+        for (Category userByIdCategory : userById.getCategories()) {
+            if (userByIdCategory.getName().equals(category.getName())) {
                 throw new CategoryAlreadyExist(category.getName());
             }
         }
+        category.setUsr(userById);
+        userById.getCategories().add(category);
+        User saveUser = userRepo.save(userById);
+        Optional<Category> respCat = saveUser.getCategories().stream().filter(cat -> cat.getName().equals(category.getName())).findFirst();
 
-        category.setUsr(user);
-        user.getCategories().add(category);
-        User saveUser = userRepo.save(user);
-        Category byName = categoryRepo.getByNameAndUsr(category.getName(), saveUser);
-        return ResponseEntity.ok(CategoryDto.getCategoryDto(byName));
+        return ResponseEntity.ok(CategoryDto.getCategoryDto(respCat.get()));
+    }
+
+    public ResponseEntity<List<CategoryDto>> getCategories() throws InvalidToken {
+        if (!tokenHolder.isValidToken()) {
+            throw new InvalidToken();
+        }
+        tokenHolder.updateTimeValidityToken();
+
+        User user = userRepo.getUserById(tokenHolder.getIdUser());
+
+        return ResponseEntity.ok(CategoryDto.getListCategoryDto(user.getCategories()));
     }
 
     public ResponseEntity<CategoryDto> updateCategory(Category category) throws InvalidToken {
@@ -60,6 +64,7 @@ public class CategoryService {
             throw new InvalidToken();
         }
         tokenHolder.updateTimeValidityToken();
+
         Category categoryFromDb = categoryRepo.getById(category.getId());
         categoryFromDb.setName(category.getName());
         Category savedCategory = categoryRepo.save(categoryFromDb);

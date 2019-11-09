@@ -4,6 +4,7 @@
       :items="categories"
       v-model="currentlyCategory"
       :rules="currentlyCategoryRules"
+      label="название категории"
     ></v-select>
     <v-text-field
       v-model="editableСategory"
@@ -12,14 +13,13 @@
       :rules="editableСategoryRules"
       required
     ></v-text-field>
-    <v-btn @click="validate">обновить</v-btn>
+    <v-btn @click="submitHandler" class="mt-3 teal darken-1" dark>обновить</v-btn>
   </v-form>
 </template>
 
 <script>
 export default {
   name: 'EditCategory',
-  props: ['categories', 'submit'],
   data: () => ({
     valid: true,
     currentlyCategory: '',
@@ -32,10 +32,24 @@ export default {
       v => (v && v.length > 3) || 'name must be at least 4 characters'
     ]
   }),
+  computed: {
+    categories () {
+      return this.$store.getters.categories.map(cat => cat.name)
+    }
+  },
   methods: {
-    validate () {
+    async submitHandler () {
       if (this.$refs.form.validate()) {
-        this.submit(this.currentlyCategory, this.editableСategory)
+        try {
+          const ctgr = this.$store.getters.categories.find(cat => cat.name === this.currentlyCategory)
+          await this.$store.dispatch('categoryUpdate', { id: ctgr.id, name: this.editableСategory })
+        } catch (e) {
+          console.log(e)
+          if (e.body.message === 'invalid token') {
+            this.$router.push('/login?message=sign in again')
+            this.$store.commit('logout')
+          }
+        }
         this.$refs.form.reset()
       }
     }

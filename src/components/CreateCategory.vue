@@ -12,7 +12,7 @@
       required
     ></v-text-field>
 
-    <v-btn @click="submit">создать</v-btn>
+    <v-btn @click="submit" class="mt-3 teal darken-1" dark>создать</v-btn>
   </v-form>
 </template>
 
@@ -31,13 +31,12 @@ export default {
     async submit () {
       if (this.$refs.form.validate()) {
         try {
-          const category = await this.$store.dispatch('createCategory', {
+          await this.$store.dispatch('createCategory', {
             name: this.name
           })
           this.$refs.form.reset()
-          this.name = ''
-          this.$emit('addCategory', category)
         } catch (e) {
+          // console.log(e)
           if (e.body.message === 'invalid token') {
             this.$router.push('/login?message=sign in again')
             this.$store.commit('logout')
