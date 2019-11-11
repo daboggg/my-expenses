@@ -19,7 +19,7 @@ export default {
         const res = await Vue.http.post(`http://localhost:${port}/api/category`,
           JSON.stringify({ name: name }), {
             headers: {
-              'Content-Type': 'application/json',
+              'Content-Type': 'application/json;charset=cp1251',
               'Token': getters.getToken
             }
           })
