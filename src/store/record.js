@@ -1,11 +1,19 @@
 import Vue from 'vue'
 
-const port = process.env.VUE_APP_SERVERPORT
+const ipEndPort = process.env.VUE_APP_SERVERIPENDPORT
 export default {
+  state: {
+    records: []
+  },
+  mutations: {
+    records (state, records) {
+      state.records = records
+    }
+  },
   actions: {
     async recordCreate ({ commit, getters }, record) {
       try {
-        await Vue.http.post(`http://localhost:${port}/api/record`,
+        await Vue.http.post(`http://${ipEndPort}/api/record`,
           JSON.stringify({ ...record }), {
             headers: {
               'Content-Type': 'application/json',
@@ -21,18 +29,22 @@ export default {
     },
     async getRecords ({ commit, getters }) {
       try {
-        const res = await Vue.http.get(`http://localhost:${port}/api/record`, {
+        const res = await Vue.http.get(`http://${ipEndPort}/api/record`, {
           headers: {
             'Content-Type': 'application/json',
             'Token': getters.getToken
           }
         })
         const data = await res.json()
+        commit('records', data)
         return data
       } catch (e) {
         console.log(e)
         throw e
       }
     }
+  },
+  getters: {
+    records: state => state.records
   }
 }

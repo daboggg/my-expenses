@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const port = process.env.VUE_APP_SERVERPORT
+const ipEndPort = process.env.VUE_APP_SERVERIPENDPORT
 export default {
   state: {
     categories: []
@@ -16,7 +16,7 @@ export default {
   actions: {
     async createCategory ({ commit, getters }, { name }) {
       try {
-        const res = await Vue.http.post(`http://localhost:${port}/api/category`,
+        const res = await Vue.http.post(`http://${ipEndPort}/api/category`,
           JSON.stringify({ name: name }), {
             headers: {
               'Content-Type': 'application/json;charset=cp1251',
@@ -37,7 +37,7 @@ export default {
     },
     async getCategories ({ commit, getters }) {
       try {
-        const res = await Vue.http.get(`http://localhost:${port}/api/category`, {
+        const res = await Vue.http.get(`http://${ipEndPort}/api/category`, {
           headers: {
             'Content-Type': 'application/json',
             'Token': getters.getToken
@@ -55,7 +55,7 @@ export default {
       console.log(id)
       console.log(name)
       try {
-        const res = await Vue.http.put(`http://localhost:${port}/api/category`,
+        const res = await Vue.http.put(`http://${ipEndPort}/api/category`,
           JSON.stringify({ id: id, name: name }), {
             headers: {
               'Content-Type': 'application/json',

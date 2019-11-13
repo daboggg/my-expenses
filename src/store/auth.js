@@ -1,5 +1,5 @@
 import Vue from 'vue'
-const port = process.env.VUE_APP_SERVERPORT
+const ipEndPort = process.env.VUE_APP_SERVERIPENDPORT
 export default {
   state: {
     name: null,
@@ -22,7 +22,7 @@ export default {
   actions: {
     async login ({ commit }, { email, password }) {
       try {
-        const res = await Vue.http.post(`http://localhost:${port}/api/login`,
+        const res = await Vue.http.post(`http://${ipEndPort}/api/login`,
           JSON.stringify({ email: email, password: password }),
           { 'Content-Type': 'application/json' })
 
@@ -36,7 +36,7 @@ export default {
     },
     async register ({ commit }, { email, password, name }) {
       try {
-        const res = await Vue.http.put(`http://localhost:${port}/api/register`,
+        const res = await Vue.http.put(`http://${ipEndPort}/api/register`,
           JSON.stringify({ email: email, password: password, name: name }),
           { 'Content-Type': 'application/json' })
         const login = await res.json()

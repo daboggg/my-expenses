@@ -32,6 +32,7 @@ export default {
     items: [
       { text: 'Счет', icon: 'mdi-currency-rub', to: '/' },
       { text: 'Категории', icon: 'mdi-view-list', to: '/categories' },
+      { text: 'История', icon: 'mdi-book-open-variant', to: '/history' },
       { text: 'Новая запись', icon: 'mdi-check-outline', to: '/record' }
     ]
   })

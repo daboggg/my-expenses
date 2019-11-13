@@ -2,15 +2,15 @@ package ru.zinin.myexpenses.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.zinin.myexpenses.dto.Token;
 import ru.zinin.myexpenses.dto.TokenDto;
 import ru.zinin.myexpenses.model.User;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Component
 public class TokenHolder {
@@ -77,5 +77,17 @@ public class TokenHolder {
         id = tokenMap.get(tmp);
 
         return tokenMap.get(tmp);
+    }
+
+    @Scheduled(cron = "0 0 * * * ?")
+    public void reportCurrentTime() {
+
+        Iterator<Map.Entry<Token, Long>> iterator = tokenMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Token, Long> next = iterator.next();
+            if (next.getKey().getCreationTimeToken() < System.currentTimeMillis()) {
+                iterator.remove();
+            }
+        }
     }
 }

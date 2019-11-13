@@ -40,6 +40,12 @@ const router = new VueRouter({
       name: 'record',
       meta: { layout: 'main', auth: true },
       component: () => import('../views/NewRecord.vue')
+    },
+    {
+      path: '/history',
+      name: 'history',
+      meta: { layout: 'main', auth: true },
+      component: () => import('../views/History.vue')
     }
   ]
 })
