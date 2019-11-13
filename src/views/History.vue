@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import dateFilter from '../filters/date.filter'
+import currencyFilter from '../filters/currency.filter'
 export default {
   name: 'History',
   data: () => ({
@@ -55,7 +57,15 @@ export default {
   }),
   computed: {
     records () {
-      return this.$store.getters.records
+      // return this.$store.getters.records
+      return this.$store.getters.records.map(rec => {
+        const tmp = {
+          ...rec,
+          creationDate: dateFilter(rec.creationDate, 'timedate'),
+          amount: currencyFilter(rec.amount)
+        }
+        return tmp
+      })
     }
   },
   methods: {
@@ -68,6 +78,7 @@ export default {
     try {
       await this.$store.dispatch('getRecords')
       console.log(this.$store.getters.records)
+      console.log(dateFilter(new Date()))
     } catch (e) {
       if (e.body.message === 'invalid token') {
         this.$router.push('/login?message=sign in again')
