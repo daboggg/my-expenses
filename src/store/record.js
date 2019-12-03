@@ -39,6 +39,23 @@ export default {
         commit('records', data)
         return data
       } catch (e) {
+        commit('setError', e.body.message)
+        console.log(e)
+        throw e
+      }
+    },
+    async getRecord ({ commit, getters }, id) {
+      try {
+        const res = await Vue.http.get(`http://${ipEndPort}/api/rec?id=${id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Token': getters.getToken
+          }
+        })
+        const data = await res.json()
+        return data
+      } catch (e) {
+        commit('setError', e.body.message)
         console.log(e)
         throw e
       }

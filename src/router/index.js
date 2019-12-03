@@ -46,6 +46,18 @@ const router = new VueRouter({
       name: 'history',
       meta: { layout: 'main', auth: true },
       component: () => import('../views/History.vue')
+    },
+    {
+      path: '/detail/:id',
+      name: 'detail',
+      meta: { layout: 'main', auth: true },
+      component: () => import('../views/Detail.vue')
+    },
+    {
+      path: '*',
+      name: 'error',
+      meta: { layout: 'main', auth: true },
+      component: () => import('../views/Home.vue')
     }
   ]
 })

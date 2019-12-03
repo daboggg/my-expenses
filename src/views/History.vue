@@ -1,20 +1,32 @@
 <template>
-  <v-content>
-    <v-data-table
-      :headers="headers"
-      :items="records"
-      caption="Все записи"
-      class="elevation-1 px-6"
-    >
-      <template v-slot:item.income="{ item }">
-        <v-chip :color="getColor(item.income)" dark>{{ item.income === true ? 'приход' : 'расход' }}</v-chip>
-      </template>
-      <template v-slot:item.id="{ item }">
-        <v-btn text>
-          <v-icon>mdi-open-in-new</v-icon>
-        </v-btn>
-      </template>
-    </v-data-table>
+  <v-content >
+    <div v-if="loader" class="d-flex justify-center ma-10">
+      <v-progress-circular
+        :size="170"
+        :width="12"
+        color="teal darken-1"
+        indeterminate
+      ></v-progress-circular>
+    </div>
+      <v-data-table
+        :headers="headers"
+        :items="records"
+        caption="Все записи"
+        class="elevation-1 px-6"
+        v-else
+      >
+        <template v-slot:item.income="{ item }">
+          <v-chip :color="getColor(item.income)" dark>{{ item.income === true ? 'приход' : 'расход' }}</v-chip>
+        </template>
+        <template v-slot:item.id="{ item }">
+          <v-btn
+            text
+            @click="$router.push('/detail/' + item.id)"
+          >
+            <v-icon>mdi-open-in-new</v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
   </v-content>
 </template>
 
@@ -24,6 +36,7 @@ import currencyFilter from '../filters/currency.filter'
 export default {
   name: 'History',
   data: () => ({
+    loader: true,
     headers: [
       // {
       //   align: 'center',
@@ -58,6 +71,7 @@ export default {
   computed: {
     records () {
       // return this.$store.getters.records
+      console.log(this.$store.getters.records)
       return this.$store.getters.records.map(rec => {
         const tmp = {
           ...rec,
@@ -77,6 +91,7 @@ export default {
   async mounted () {
     try {
       await this.$store.dispatch('getRecords')
+      this.loader = false
       console.log(this.$store.getters.records)
       console.log(dateFilter(new Date()))
     } catch (e) {

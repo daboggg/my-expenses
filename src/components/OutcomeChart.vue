@@ -1,5 +1,12 @@
 <template>
-  <div>
+  <div class="d-flex justify-center align-center mt-10">
+    <v-progress-circular
+      :size="170"
+      :width="12"
+      color="purple"
+      indeterminate
+      v-if="loader"
+    ></v-progress-circular>
     <div id="chart">
       <apexchart type=donut width=500 :options="chartOptions" :series="series" />
     </div>
@@ -12,6 +19,7 @@ export default {
   name: 'OutcomeChart',
   props: ['dataChart'],
   data: () => ({
+    loader: true,
     series: [],
     chartOptions: {
       dataLabels: {
@@ -42,6 +50,7 @@ export default {
   }),
   watch: {
     dataChart () {
+      this.loader = false
       this.series = this.dataChart.series
       this.chartOptions = { ...this.chartOptions, labels: this.dataChart.labels }
     }

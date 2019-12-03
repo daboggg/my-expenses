@@ -1,19 +1,19 @@
 <template>
   <v-content>
-    <p class="text-center display-1 my-3">Счет</p>
-    <v-divider></v-divider>
-    <v-container>
-      <v-row>
-        <v-col>
-          <p class="title text-center">Доходы</p>
-          <income-chart :dataChart="income"/>
-        </v-col>
-        <v-col>
-          <p class="title text-center">Расходы</p>
-          <outcome-chart :dataChart="outcome"/>
-        </v-col>
-      </v-row>
-    </v-container>
+      <p class="text-center display-1 my-3">Счет</p>
+      <v-divider></v-divider>
+      <v-container>
+        <v-row>
+          <v-col>
+            <p class="title text-center">Доходы</p>
+            <income-chart :dataChart="income"/>
+          </v-col>
+          <v-col>
+            <p class="title text-center">Расходы</p>
+            <outcome-chart :dataChart="outcome"/>
+          </v-col>
+        </v-row>
+      </v-container>
   </v-content>
 </template>
 
@@ -57,7 +57,7 @@ export default {
   async mounted () {
     try {
       const records = await this.$store.dispatch('getRecords')
-      console.log(records)
+      // console.log(records)
       this.records = records
     } catch (e) {
       if (e.body.message === 'invalid token') {

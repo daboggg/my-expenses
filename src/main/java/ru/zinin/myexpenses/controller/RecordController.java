@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.zinin.myexpenses.dto.RecordDto;
 import ru.zinin.myexpenses.dto.RecordForChart;
 import ru.zinin.myexpenses.exception.InvalidToken;
+import ru.zinin.myexpenses.model.Record;
 import ru.zinin.myexpenses.service.RecordService;
 
 import java.util.List;
@@ -26,5 +27,11 @@ public class RecordController {
     @GetMapping("/api/record")
     public ResponseEntity<List<RecordForChart>> getRecords() throws InvalidToken {
         return recordService.getRecords();
+    }
+
+    @CrossOrigin(methods = RequestMethod.GET)
+    @GetMapping("/api/rec")
+    public ResponseEntity<RecordForChart> getRecord(@RequestParam Long id) throws InvalidToken {
+        return recordService.getRecord(id);
     }
 }

@@ -11,11 +11,11 @@ import ru.zinin.myexpenses.model.Category;
 import ru.zinin.myexpenses.model.Record;
 import ru.zinin.myexpenses.model.User;
 import ru.zinin.myexpenses.repo.CategoryRepo;
+import ru.zinin.myexpenses.repo.RecordRepo;
 import ru.zinin.myexpenses.repo.UserRepo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class RecordService {
@@ -28,6 +28,9 @@ public class RecordService {
 
     @Autowired
     UserRepo userRepo;
+
+    @Autowired
+    RecordRepo recordRepo;
 
     public void createRecord(RecordDto recordDto) throws InvalidToken {
         if (!tokenHolder.isValidToken()) {
@@ -54,5 +57,14 @@ public class RecordService {
                         .forEach(rec-> records.add(rec)));
 
         return ResponseEntity.ok(RecordForChart.getListRecordForChart(records));
+    }
+
+    public ResponseEntity<RecordForChart> getRecord(Long id) throws InvalidToken {
+        if (!tokenHolder.isValidToken()) {
+            throw new InvalidToken();
+        }
+        tokenHolder.updateTimeValidityToken();
+
+        return ResponseEntity.ok(RecordForChart.getRecordForChart(recordRepo.getRecordById(id)));
     }
 }
