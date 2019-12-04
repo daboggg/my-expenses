@@ -1,9 +1,7 @@
 <template>
   <v-content>
-    <h1>{{$route.params.id}}</h1>
-
     <v-card
-      class="mx-auto"
+      class="mx-auto my-10"
       max-width="344"
     >
       <v-system-bar
@@ -16,15 +14,19 @@
       </v-system-bar>
 
       <p class="subtitle-1 ma-4">
-        {{record.income ? 'Приход' : 'Расход'}}
+        <span class="font-weight-bold">
+          {{record.income ? 'Приход' : 'Расход'}}
+        </span>
       </p>
 
       <p class="subtitle-1 ma-4">
-        Дата: {{record.creationDate}}
+        <span class="font-weight-bold">Дата: </span>
+        {{record.creationDate | date('datetime')}}
       </p>
 
       <p class="subtitle-1 ma-4">
-        Сумма: {{record.amount}}
+        <span class="font-weight-bold">Сумма: </span>
+        {{record.amount | currency()}}
       </p>
 
       <v-card-actions>
@@ -38,6 +40,7 @@
         <v-btn
           color="teal darken-1"
           text
+          @click="remove"
         >
           Удалить
         </v-btn>
@@ -72,6 +75,20 @@ export default {
     show: false,
     record: ''
   }),
+  methods: {
+    async remove () {
+      try {
+        console.log(this.record.id + '    :HHHH')
+        await this.$store.dispatch('removeRecord', this.record.id)
+        this.$router.push('/history')
+      } catch (e) {
+        if (e.body.message === 'invalid token') {
+          this.$router.push('/login?message=sign in again')
+          this.$store.commit('logout')
+        }
+      }
+    }
+  },
   async mounted () {
     try {
       const id = await this.$route.params.id

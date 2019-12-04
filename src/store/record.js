@@ -59,6 +59,23 @@ export default {
         console.log(e)
         throw e
       }
+    },
+    async removeRecord ({ commit, getters }, id) {
+      try {
+        console.log(id)
+        await Vue.http.delete(`http://${ipEndPort}/api/record/${id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Token': getters.getToken
+          }
+        })
+        // const data = await res.json()
+        // return data
+      } catch (e) {
+        commit('setError', e.body.message)
+        console.log(e)
+        throw e
+      }
     }
   },
   getters: {

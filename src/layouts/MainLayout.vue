@@ -6,6 +6,7 @@
     <navbar :drawerCtrl="drawerCtrl"/>
 
     <router-view/>
+
   </v-app>
 </template>
 

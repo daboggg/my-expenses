@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.zinin.myexpenses.dto.RecordDto;
 import ru.zinin.myexpenses.dto.RecordForChart;
 import ru.zinin.myexpenses.exception.InvalidToken;
+import ru.zinin.myexpenses.exception.RecordNotFound;
 import ru.zinin.myexpenses.model.Record;
 import ru.zinin.myexpenses.service.RecordService;
 
@@ -33,5 +34,11 @@ public class RecordController {
     @GetMapping("/api/rec")
     public ResponseEntity<RecordForChart> getRecord(@RequestParam Long id) throws InvalidToken {
         return recordService.getRecord(id);
+    }
+
+    @CrossOrigin(methods = RequestMethod.DELETE)
+    @DeleteMapping("/api/record/{id}")
+    public void deleteRecord(@PathVariable Long id) throws RecordNotFound, InvalidToken {
+        recordService.deleteRecord(id);
     }
 }

@@ -24,7 +24,8 @@ public class Category {
 
 
     @OneToMany(mappedBy = "category",
-            cascade = CascadeType.ALL,
+            cascade = {CascadeType.MERGE},
+            orphanRemoval = true,
             fetch = FetchType.EAGER)
     private List<Record> records;
 
